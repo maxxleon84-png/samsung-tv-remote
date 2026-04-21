@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import com.maxxleon.samsungremote.ui.theme.SamsungRemoteTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Surface(modifier = Modifier.fillMaxSize()) {
-                Text("Samsung Remote — stub")
+            SamsungRemoteTheme {
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    Text("Samsung Remote — stub")
+                }
             }
         }
     }
