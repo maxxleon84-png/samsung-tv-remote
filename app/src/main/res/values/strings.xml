@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Пульт Samsung</string>
+    <string name="setup_title">Подключим твой Samsung TV</string>
+    <string name="setup_hint">На ТВ → Меню → Сеть → Состояние сети → IP-адрес</string>
+    <string name="setup_ip_label">IP-адрес телевизора</string>
+    <string name="setup_connect">Подключить</string>
+    <string name="setup_waiting">Подтверди подключение на телевизоре</string>
+    <string name="status_connected">подключён</string>
+    <string name="status_connecting">подключаемся</string>
+    <string name="status_error">ошибка</string>
+    <string name="error_tv_offline">ТВ не отвечает. Проверь, что ТВ включён и в той же Wi-Fi.</string>
+    <string name="error_denied">Доступ запрещён. Сбросить и попробовать заново?</string>
+    <string name="retry">Повторить</string>
+    <string name="settings_change_ip">Сменить IP</string>
+    <string name="settings_reconnect">Переподключиться</string>
+    <string name="settings_about">О приложении</string>
+</resources>
