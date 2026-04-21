@@ -1,5 +1,6 @@
 package com.maxxleon.samsungremote.net
 
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
@@ -51,24 +52,23 @@ class SamsungLegacyClient(
     private val phoneIp: String,
     private val phoneMac: String,
     private val remoteName: String = "Remote",
-    private val connectTimeoutMs: Int = 5_000
+    private val connectTimeoutMs: Int = 5_000,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
     companion object { const val PORT = 55_000 }
 
     private var transport: Transport? = null
 
-    suspend fun connect(tvIp: String) = withContext(Dispatchers.IO) {
+    suspend fun connect(tvIp: String) = withContext(ioDispatcher) {
         close()
         val t = transportFactory()
         t.connect(tvIp, PORT, connectTimeoutMs)
         t.write(SamsungPacketEncoder.authPacket(phoneIp, phoneMac, remoteName))
-        // мы читаем ответ, но не валидируем его жёстко в v1.0 — ТВ может ответить по-разному,
-        // факт успешного write + отсутствие IOException считаем признаком установки пары́.
         t.read(1024)
         transport = t
     }
 
-    suspend fun sendKey(key: KeyCode) = withContext(Dispatchers.IO) {
+    suspend fun sendKey(key: KeyCode) = withContext(ioDispatcher) {
         val t = transport ?: throw IllegalStateException("Not connected")
         t.write(SamsungPacketEncoder.keyPacket(key))
     }

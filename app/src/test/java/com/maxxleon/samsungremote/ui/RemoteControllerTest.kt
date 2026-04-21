@@ -6,7 +6,6 @@ import com.maxxleon.samsungremote.net.SamsungLegacyClient
 import com.maxxleon.samsungremote.net.Transport
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -40,7 +39,8 @@ class RemoteControllerTest {
         transportFactory = { transport },
         phoneIp = "192.168.1.55",
         phoneMac = "AA:BB:CC:DD:EE:FF",
-        remoteName = "Remote"
+        remoteName = "Remote",
+        ioDispatcher = dispatcher
     )
 
     @Test fun `connect transitions Idle - Connecting - Connected on success`() = runTest {
