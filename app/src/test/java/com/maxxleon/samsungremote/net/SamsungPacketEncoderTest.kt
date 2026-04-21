@@ -66,4 +66,39 @@ class SamsungPacketEncoderTest {
         )
         assertArrayEquals(expected, bytes)
     }
+
+    @Test fun `key packet for VOLUME_UP matches reference bytes`() {
+        val bytes = SamsungPacketEncoder.keyPacket(KeyCode.VOLUME_UP)
+        // payload = 0x00 0x00 0x00 + len16LE(b64("KEY_VOLUP")) + b64("KEY_VOLUP")
+        // "KEY_VOLUP" -> b64 "S0VZX1ZPTFVQ" (12 bytes)
+        // payload length = 3 + 2 + 12 = 17 -> 0x11 0x00
+        val expected = byteArrayOf(
+            0x00,
+            0x14, 0x00,
+            0x69, 0x70, 0x68, 0x6F, 0x6E, 0x65, 0x2E, 0x2E,
+            0x69, 0x61, 0x70, 0x70, 0x2E, 0x73, 0x61, 0x6D,
+            0x73, 0x75, 0x6E, 0x67,
+            0x11, 0x00,
+            0x00, 0x00, 0x00,
+            0x0C, 0x00,
+            0x53, 0x30, 0x56, 0x5A, 0x58, 0x31, 0x5A, 0x50,
+            0x54, 0x46, 0x56, 0x51
+        )
+        assertArrayEquals(expected, bytes)
+    }
+
+    @Test fun `key packet includes three zero bytes prefix`() {
+        val bytes = SamsungPacketEncoder.keyPacket(KeyCode.OK)
+        // после заголовка и app string: offset = 1 + 2 + 20 + 2 = 25
+        assertEquals(0x00.toByte(), bytes[25])
+        assertEquals(0x00.toByte(), bytes[26])
+        assertEquals(0x00.toByte(), bytes[27])
+    }
+
+    @Test fun `every KeyCode produces non-empty packet`() {
+        KeyCode.values().forEach { code ->
+            val bytes = SamsungPacketEncoder.keyPacket(code)
+            assert(bytes.size > 30) { "packet for $code too short: ${bytes.size}" }
+        }
+    }
 }
